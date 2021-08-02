@@ -159,9 +159,6 @@ header {
 .gallery__image:hover {
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
-.chakra-modal--body-4 {
-  /* max-height: 80vh; */
-}
 
 .popup-img {
   height: 100%;

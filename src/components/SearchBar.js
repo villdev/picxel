@@ -18,8 +18,6 @@ export default function SearchBar({
 }) {
   const searchRef = useRef(null);
 
-  // const [searchQuery, setSearchQuery] = useState("");
-
   const [
     searchHistory,
     setSearchHistory,
@@ -49,7 +47,6 @@ export default function SearchBar({
   };
 
   return (
-    // <div>
     <form
       className="search-bar"
       // onSubmit={startSearch}
@@ -100,6 +97,5 @@ export default function SearchBar({
         />
       </InputGroup>
     </form>
-    // </div>
   );
 }

@@ -21,7 +21,6 @@ export default function Home() {
     photos,
     status,
     getNextPage,
-    // searchResults,
     getNextSearchPage,
     searchQuery,
     setSearchQuery,
@@ -49,9 +48,16 @@ export default function Home() {
         setSearchQuery={setSearchQuery}
         getSearchResults={getSearchResults}
       />
-      <Modal isCentered isOpen={isOpen} onClose={closePopup} size={"xl"}>
+      <Modal
+        scrollBehavior={"inside"}
+        isCentered
+        isOpen={isOpen}
+        onClose={closePopup}
+        size={"xl"}
+      >
         <ModalOverlay />
         <ModalContent
+          // maxHeight="80vh"
           paddingTop="1.5rem"
           paddingBottom="0.5rem"
           paddingRight="0.5rem"

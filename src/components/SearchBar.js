@@ -26,6 +26,16 @@ export default function SearchBar({
 
   const [searchContextStatus, setSearchContextStatus] = useState("close");
 
+  // const suggestionRefs = useRef(null);
+  // suggestionRefs.current = [];
+  // const [currentFocus, setCurrentFocus] = useState(0);
+
+  // const addToSuggestionRefs = (el) => {
+  //   if (el && !suggestionRefs.current.includes(el)) {
+  //     suggestionRefs.current.push(el);
+  //   }
+  // };
+
   const startSearch = (e) => {
     e.preventDefault();
     getSearchResults(e.target.searchQuery.value);
@@ -34,11 +44,16 @@ export default function SearchBar({
     searchRef.current.blur();
   };
 
-  const removeFocus = (event) => {
+  const handleKeybEvents = (event) => {
     if (event.key === "Escape") {
       setSearchContextStatus("close");
       searchRef.current.blur();
     }
+    // else if (event.key === "ArrowDown") {
+    //   // do something
+    // } else if (event.key === "ArrowUp") {
+    //   // do something
+    // }
   };
 
   const clearSearchBar = () => {
@@ -74,7 +89,9 @@ export default function SearchBar({
           focusBorderColor="blue.600"
           _placeholder={{ color: "gray.400" }}
           autoComplete="off"
-          onKeyDown={removeFocus}
+          onKeyDown={(e) => {
+            handleKeybEvents(e);
+          }}
           onChange={(e) => {
             setSearchQuery(e.target.value);
           }}
@@ -94,6 +111,8 @@ export default function SearchBar({
           searchRef={searchRef}
           removeSearchHistory={removeSearchHistory}
           getSearchResults={getSearchResults}
+          searchQuery={searchQuery}
+          // addToSuggestionRefs={addToSuggestionRefs}
         />
       </InputGroup>
     </form>

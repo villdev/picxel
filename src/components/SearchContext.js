@@ -1,6 +1,8 @@
 import React from "react";
 import { Button } from "@chakra-ui/react";
 
+import { filterSearchHistory } from "../utils";
+
 const SearchContext = ({
   searchHistory,
   setSearchHistory,
@@ -10,7 +12,11 @@ const SearchContext = ({
   searchRef,
   removeSearchHistory,
   getSearchResults,
+  searchQuery,
+  // addToSuggestionRefs,
 }) => {
+  const filteredSearchHistory = filterSearchHistory(searchHistory, searchQuery);
+
   const clearSearchHistory = () => {
     setSearchHistory([]);
     removeSearchHistory();
@@ -24,24 +30,27 @@ const SearchContext = ({
     searchRef.current.blur();
   };
 
-  if (status === "open" && searchHistory.length > 0) {
+  if (status === "open" && filteredSearchHistory.length > 0) {
     return (
       <div className="search-context">
-        {searchHistory.map((history, index) => (
-          <Button
-            className="search-context__item"
-            key={index}
-            onClick={() => {
-              getSearchQuery(history);
-            }}
-            isFullWidth={true}
-            backgroundColor="gray.700"
-            _hover={{ backgroundColor: "gray.600" }}
-            justifyContent={"flex-start"}
-          >
-            {history}
-          </Button>
-        ))}
+        <div className="suggestion-container">
+          {filteredSearchHistory.map((history, index) => (
+            <Button
+              // ref={addToSuggestionRefs}
+              className="search-context__item"
+              key={index}
+              onClick={() => {
+                getSearchQuery(history);
+              }}
+              isFullWidth={true}
+              backgroundColor="gray.700"
+              _hover={{ backgroundColor: "gray.600" }}
+              justifyContent={"flex-start"}
+            >
+              {history}
+            </Button>
+          ))}
+        </div>
         <div className="search-context__item--reverse">
           <Button
             onClick={() => {

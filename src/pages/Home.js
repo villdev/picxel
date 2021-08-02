@@ -1,7 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { Gallery, Header } from "../components";
 import { usePhotos } from "../hooks";
-import { Spinner, Alert, AlertIcon } from "@chakra-ui/react";
+import {
+  Spinner,
+  Alert,
+  AlertIcon,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  Button,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+} from "@chakra-ui/react";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 export default function Home() {
@@ -17,6 +29,19 @@ export default function Home() {
     variant,
   } = usePhotos();
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [currentImg, setCurrentImg] = useState(null);
+
+  const openPopup = (url) => {
+    setCurrentImg(url);
+    onOpen();
+  };
+
+  const closePopup = () => {
+    setCurrentImg(null);
+    onClose();
+  };
+
   return (
     <div>
       <Header
@@ -24,6 +49,37 @@ export default function Home() {
         setSearchQuery={setSearchQuery}
         getSearchResults={getSearchResults}
       />
+      <Modal isCentered isOpen={isOpen} onClose={closePopup} size={"xl"}>
+        <ModalOverlay />
+        <ModalContent
+          paddingTop="1.5rem"
+          paddingBottom="0.5rem"
+          paddingRight="0.5rem"
+          paddingLeft="0.5rem"
+          backgroundColor="gray.800"
+        >
+          <ModalCloseButton size="sm" />
+          <ModalBody>
+            <img className="popup-img" src={currentImg} alt="" />
+          </ModalBody>
+          <ModalFooter>
+            <Button variant="ghost" mr={3} onClick={onClose}>
+              Close
+            </Button>
+            <Button colorScheme="blue">
+              <a
+                href={currentImg}
+                download
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Download image
+              </a>
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
       {status === "pending" && (
         <div className="loader-wrapper">
           <Spinner />
@@ -45,7 +101,7 @@ export default function Home() {
             </p>
           }
         >
-          <Gallery imgArray={photos} />
+          <Gallery imgArray={photos} openPopup={openPopup} />
         </InfiniteScroll>
       )}
       {status === "rejected" && (
